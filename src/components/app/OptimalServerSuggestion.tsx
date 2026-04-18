@@ -31,9 +31,18 @@ export default function OptimalServerSuggestion({ selectedServer, setSelectedSer
   const handleSuggest = async () => {
     setLoading(true);
     setSuggestion(null);
-    const result = await getOptimalServerSuggestion();
-    setSuggestion(result);
-    setLoading(false);
+    try {
+      const result = await getOptimalServerSuggestion();
+      setSuggestion(result);
+    } catch (error) {
+      console.error('Error in handleSuggest:', error);
+      setSuggestion({
+        optimalServer: 'Error',
+        reasoning: 'An unexpected error occurred. Please try again later.'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSelectSuggested = () => {
